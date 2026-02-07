@@ -6,7 +6,6 @@ Handles extraction of data from various sources. Phase 1 supports CSV files.
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import pandas as pd
 

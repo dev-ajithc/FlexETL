@@ -8,7 +8,6 @@ Phase 1 supports SQLite database.
 import logging
 import sqlite3
 from pathlib import Path
-from typing import Optional
 
 import pandas as pd
 
@@ -103,9 +102,8 @@ class SQLiteLoader:
             conn = sqlite3.connect(str(self.database_path))
             cursor = conn.cursor()
 
-            cursor.execute(
-                f"SELECT COUNT(*) FROM {self.table_name}"
-            )
+            query = f'SELECT COUNT(*) FROM "{self.table_name}"'
+            cursor.execute(query)
             count = cursor.fetchone()[0]
 
             conn.close()

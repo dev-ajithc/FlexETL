@@ -1,9 +1,5 @@
 """Unit tests for extractor module."""
 
-import tempfile
-from pathlib import Path
-
-import pandas as pd
 import pytest
 
 from flexetl.extractor import CSVExtractor
