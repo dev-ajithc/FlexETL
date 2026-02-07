@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flexetl-pipeline
+    volumes:
+      - ./data:/app/data:ro
+      - ./output:/app/output
+      - ./flexetl:/app/flexetl
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    networks:
+      - flexetl-network
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flexetl-test
+    environment:
+      - PATH=/home/flexetl/.local/bin:/usr/local/bin:/usr/bin:/bin
+    command: >
+      sh -c "pip install --user -r requirements-dev.txt &&
+             pytest tests/ -v --cov=flexetl --cov-report=term-missing"
+    volumes:
+      - ./flexetl:/app/flexetl
+      - ./tests:/app/tests
+      - ./requirements-dev.txt:/app/requirements-dev.txt
+    networks:
+      - flexetl-network
+
+networks:
+  flexetl-network:
+    driver: bridge
